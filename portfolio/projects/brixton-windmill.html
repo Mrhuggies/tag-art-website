@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brixton Windmill — Thomas Hughes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="noise"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+    <div class="cursor-text" id="cursorText">VIEW</div>
+    <div id="nav-placeholder"></div>
+
+    <section class="project-hero">
+        <div class="project-hero-bg">
+            <img src="../assets/images/windmill/homepage.webp" alt="Brixton Windmill">
+            <div class="project-hero-overlay"></div>
+        </div>
+        <div class="project-hero-content">
+            <a href="../index.html#work" class="project-hero-back">← BACK TO PROJECTS</a>
+            <h1 class="project-hero-title">BRIXTON WINDMILL</h1>
+            <p class="project-hero-subtitle">
+                A 360° virtual tour of London's Grade II listed windmill, combining aerial Gaussian splat captures with ground-level photography. Navigate from bird's-eye views down to architectural details in an immersive floating island experience.
+            </p>
+            <div class="project-hero-meta">
+                <div class="project-meta-item">
+                    <span class="project-meta-label">ROLE</span>
+                    <span class="project-meta-value">Creator / Drone Pilot</span>
+                </div>
+                <div class="project-meta-item">
+                    <span class="project-meta-label">YEAR</span>
+                    <span class="project-meta-value">2024-2025</span>
+                </div>
+                <div class="project-meta-item">
+                    <span class="project-meta-label">TYPE</span>
+                    <span class="project-meta-value">Heritage Documentation</span>
+                </div>
+                <div class="project-meta-item">
+                    <span class="project-meta-label">STATUS</span>
+                    <span class="project-meta-value text-electric">Live</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="project-body">
+        <section class="project-section reveal">
+            <h2 class="project-section-title">Overview</h2>
+            <div class="project-text">
+                <p>
+                    Brixton Windmill, built in 1816, is one of only two surviving windmills in London and holds Grade II listed status. This virtual tour preserves the historic structure digitally, making it accessible to anyone, anywhere—particularly valuable for those unable to visit the physical site.
+                </p>
+                <p>
+                    Working around the constraint of no interior access, I focused on capturing the windmill's exterior architectural details and its commanding presence from multiple perspectives. The result is a "floating island" experience where the windmill exists in its own isolated space, allowing visitors to appreciate the structure's form without urban clutter.
+                </p>
+            </div>
+        </section>
+
+        <section class="project-section reveal">
+            <h2 class="project-section-title">Production Pipeline</h2>
+            <div class="project-text">
+                <p><strong>1. Drone Capture (CAA A2 Certified):</strong> Aerial footage captured using professional drone equipment with proper authorization to fly near a Grade II listed building. Multiple flight paths ensured comprehensive coverage of the windmill's exterior.</p>
+                
+                <p><strong>2. Kiri Engine Processing:</strong> Raw drone footage processed into point cloud data, generating the initial 3D representation from hundreds of aerial photographs.</p>
+                
+                <p><strong>3. SuperSplat Cleanup:</strong> Refined the Gaussian splat in SuperSplat editor, removing noise, optimizing geometry, and preparing the model for web deployment. File size optimization was critical to ensure smooth performance without sacrificing visual quality.</p>
+                
+                <p><strong>4. 3D Vista Pro Assembly:</strong> Combined the cleaned Gaussian splat with ground-level 360° photography in 3D Vista Pro, creating seamless transitions between aerial and ground perspectives.</p>
+                
+                <p><strong>5. Server Deployment:</strong> Optimized assets deployed to web server for public access at tours.tag-art.co.uk.</p>
+            </div>
+        </section>
+
+        <section class="project-section reveal">
+            <h2 class="project-section-title">Key Features</h2>
+            <div class="project-features">
+                <div class="project-feature">
+                    <div class="project-feature-icon">🚁</div>
+                    <h3 class="project-feature-title">Aerial Perspective</h3>
+                    <p class="project-feature-desc">God's-eye view captured via drone, showing the windmill's structure from angles impossible in person.</p>
+                </div>
+                <div class="project-feature">
+                    <div class="project-feature-icon">🔍</div>
+                    <h3 class="project-feature-title">Perspective Shift</h3>
+                    <p class="project-feature-desc">Seamless zoom from aerial overview down to human-scale ground photography, revealing architectural details progressively.</p>
+                </div>
+                <div class="project-feature">
+                    <div class="project-feature-icon">🏛️</div>
+                    <h3 class="project-feature-title">Heritage Preservation</h3>
+                    <p class="project-feature-desc">Digital archiving of a Grade II listed building (built 1816), creating a permanent record accessible worldwide.</p>
+                </div>
+                <div class="project-feature">
+                    <div class="project-feature-icon">♿</div>
+                    <h3 class="project-feature-title">Universal Access</h3>
+                    <p class="project-feature-desc">Free virtual tour for those unable to visit physically, making heritage accessible to all.</p>
+                </div>
+                <div class="project-feature">
+                    <div class="project-feature-icon">🎯</div>
+                    <h3 class="project-feature-title">Architectural Focus</h3>
+                    <p class="project-feature-desc">Floating island presentation isolates the structure, allowing detailed study of the windmill's form without urban distractions.</p>
+                </div>
+                <div class="project-feature">
+                    <div class="project-feature-icon">🌐</div>
+                    <h3 class="project-feature-title">Web-Optimized</h3>
+                    <p class="project-feature-desc">High-quality Gaussian splats compressed for smooth web performance without sacrificing detail.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tour Link -->
+        <section class="project-section reveal">
+            <div class="project-cta" style="text-align: center; margin-top: 20px;">
+                <a href="https://tours.tag-art.co.uk/brixtonwindmill/" target="_blank" class="contact-btn primary" style="display: inline-flex; align-items: center; gap: 12px;">
+                    LAUNCH VIRTUAL TOUR →
+                </a>
+            </div>
+        </section>
+
+        <section class="project-section reveal">
+            <h2 class="project-section-title">Virtual Tour Views</h2>
+            <div class="project-gallery-three">
+                <div class="project-gallery-item">
+                    <img src="../assets/images/windmill/aeriel-splat.webp" alt="Aerial Gaussian Splat View">
+                    <p class="gallery-caption">Aerial Gaussian Splat</p>
+                </div>
+                <div class="project-gallery-item">
+                    <img src="../assets/images/windmill/ground-360.webp" alt="Ground-Based 360° View">
+                    <p class="gallery-caption">Ground-Level 360°</p>
+                </div>
+                <div class="project-gallery-item">
+                    <img src="../assets/images/windmill/homepage.webp" alt="Tour Interface">
+                    <p class="gallery-caption">Tour Interface</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="project-section reveal">
+            <h2 class="project-section-title">Technical Stack</h2>
+            <div class="project-text">
+                <p>
+                    The project utilizes a specialized workflow combining drone photogrammetry with Gaussian splatting technology. Kiri Engine handled the initial 3D reconstruction, followed by cleanup in SuperSplat editor to optimize the model for web delivery. 3D Vista Pro served as the tour authoring platform, allowing seamless integration of aerial splats with ground-level 360° photography.
+                </p>
+                <p>
+                    As a CAA A2 certified drone pilot, I ensured all aerial capture was conducted legally and safely near the Grade II listed structure, following proper protocols for urban heritage site documentation.
+                </p>
+            </div>
+            <div class="skills-list mt-40">
+                <span class="skill-item">DRONE (CAA A2)</span>
+                <span class="skill-item">KIRI ENGINE</span>
+                <span class="skill-item">GAUSSIAN SPLATS</span>
+                <span class="skill-item">SUPERSPLAT EDITOR</span>
+                <span class="skill-item">3D VISTA PRO</span>
+                <span class="skill-item">360° PHOTOGRAPHY</span>
+                <span class="skill-item">WEB OPTIMIZATION</span>
+            </div>
+        </section>
+    </main>
+
+    <section class="next-project">
+        <p class="next-project-label">NEXT PROJECT</p>
+        <a href="tag-art.html" class="next-project-link">
+            <h2 class="next-project-title">TAG-ART.CO.UK →</h2>
+        </a>
+    </section>
+
+    <div id="footer-placeholder"></div>
+    <script src="../js/components.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

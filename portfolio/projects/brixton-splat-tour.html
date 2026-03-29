@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brixton Splat Tour — Thomas Hughes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="noise"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+    <div class="cursor-text" id="cursorText">VIEW</div>
+    <div id="nav-placeholder"></div>
+
+    <section class="project-hero">
+        <div class="project-hero-bg">
+            <img src="../assets/images/brixtonsplat/homepage.webp" alt="Brixton Splat Tour">
+            <div class="project-hero-overlay"></div>
+        </div>
+        <div class="project-hero-content">
+            <a href="../index.html#work" class="project-hero-back">← BACK TO PROJECTS</a>
+            <h1 class="project-hero-title">BRIXTON SPLAT TOUR</h1>
+            <p class="project-hero-subtitle">
+                An interactive map-based tour showcasing Brixton's cultural icons through ground-based Gaussian splat captures. Click hotspots to explore 3D models of the David Bowie mural, historic telephone boxes, and more landmarks with detailed historical context.
+            </p>
+            <div class="project-hero-meta">
+                <div class="project-meta-item">
+                    <span class="project-meta-label">ROLE</span>
+                    <span class="project-meta-value">Creator / Photographer</span>
+                </div>
+                <div class="project-meta-item">
+                    <span class="project-meta-label">YEAR</span>
+                    <span class="project-meta-value">2024-2025</span>
+                </div>
+                <div class="project-meta-item">
+                    <span class="project-meta-label">TYPE</span>
+                    <span class="project-meta-value">Cultural Heritage Map</span>
+                </div>
+                <div class="project-meta-item">
+                    <span class="project-meta-label">STATUS</span>
+                    <span class="project-meta-value text-electric">Live</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="project-body">
+        <section class="project-section reveal">
+            <h2 class="project-section-title">Overview</h2>
+            <div class="project-text">
+                <p>
+                    The Brixton Splat Tour is an interactive map showcasing five iconic landmarks across Brixton, each captured as a high-quality Gaussian splat model. Users click hotspots on an aerial map view to explore 3D models in modal windows, complete with historical context and the ability to rotate and zoom through each scene.
+                </p>
+                <p>
+                    The aerial map itself is a Gaussian splat created from Google Earth's 3D town center view—a creative workaround that transforms rough satellite data into a navigable 3D environment. This provides an overhead perspective that contextualizes each landmark's position within Brixton's urban fabric.
+                </p>
+            </div>
+        </section>
+
+        <section class="project-section reveal">
+            <h2 class="project-section-title">The Five Landmarks</h2>
+            <div class="project-features">
+                <div class="project-feature">
+                    <div class="project-feature-icon">🎨</div>
+                    <h3 class="project-feature-title">David Bowie Mural</h3>
+                    <p class="project-feature-desc">Expert capture technique preserving stunning reflections and surface details—a technically challenging splat showcasing professional photogrammetry skills.</p>
+                </div>
+                <div class="project-feature">
+                    <div class="project-feature-icon">⛪</div>
+                    <h3 class="project-feature-title">St. Michael's Church Fountain</h3>
+                    <p class="project-feature-desc">Ground-based capture of the historic church fountain, preserving architectural and water feature details.</p>
+                </div>
+                <div class="project-feature">
+                    <div class="project-feature-icon">🎫</div>
+                    <h3 class="project-feature-title">Station Ticket Shop</h3>
+                    <p class="project-feature-desc">Interior/exterior capture of the distinctive ticket shop inside Brixton station.</p>
+                </div>
+                <div class="project-feature">
+                    <div class="project-feature-icon">📞</div>
+                    <h3 class="project-feature-title">90s Telephone Boxes</h3>
+                    <p class="project-feature-desc">Two vintage telephone boxes standing side-by-side on the high street—relics from a pre-mobile era.</p>
+                </div>
+                <div class="project-feature">
+                    <div class="project-feature-icon">🗿</div>
+                    <h3 class="project-feature-title">Henry Tate Bust</h3>
+                    <p class="project-feature-desc">Sculpture of the library's founder outside the building he established, captured with a distinctive black bag on its head.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="project-section reveal">
+            <h2 class="project-section-title">Creative Aerial Solution</h2>
+            <div class="project-text">
+                <p>
+                    The aerial map view required a creative approach. Using Google Earth's 3D visualization of Brixton town center, I screen-recorded multiple orbital camera movements around the area. This footage was then processed through Kiri Engine to generate a Gaussian splat from the screen recording.
+                </p>
+                <p>
+                    After cleanup in SuperSplat editor, the result is a navigable overhead view that provides geographic context for each landmark. The final export was optimized to the smallest possible file size without sacrificing visual quality—critical for web performance when serving 3D assets.
+                </p>
+            </div>
+        </section>
+
+        <section class="project-section reveal">
+            <h2 class="project-section-title">Interactive Experience</h2>
+            <div class="project-text">
+                <p>
+                    The interface presents users with the aerial splat map as the base layer. Hotspot markers indicate each landmark location. Clicking a hotspot opens a modal window where visitors can freely explore the 3D Gaussian splat model—rotating, zooming, and examining details from any angle.
+                </p>
+                <p>
+                    Each modal includes historical information about the landmark, providing educational context alongside the immersive 3D experience. This combination of geographic navigation and detailed 3D exploration creates an engaging way to discover Brixton's cultural heritage.
+                </p>
+            </div>
+        </section>
+
+        <!-- David Bowie Mural 3D Viewer -->
+        <section class="project-section reveal">
+            <h2 class="project-section-title">Featured: David Bowie Mural</h2>
+            <div class="project-text mb-40">
+                <p>
+                    The David Bowie mural capture showcases expert photogrammetry technique. The challenging reflective surfaces are preserved with exceptional clarity, demonstrating professional-level understanding of capture methodology and lighting conditions.
+                </p>
+            </div>
+            <div style="width: 100%; aspect-ratio: 16/9; max-width: 1200px; margin: 0 auto;">
+                <iframe title="bowie mural" src="https://www.kiriengine.app/share/3dgsEmbed/1957062561673248768?userId=1394259&type=0&bg_theme=transparent&auto_spin=0" frameborder="0" allowfullscreen mozallowfullscreen webkitallowfullscreen allow="autoplay; fullscreen;" execution-while-out-of-viewport execution-while-not-rendered style="width:100%;height:100%;border-radius:8px;"></iframe>
+            </div>
+        </section>
+
+        <!-- Gallery -->
+        <section class="project-section reveal">
+            <h2 class="project-section-title">Tour Experience</h2>
+            <div class="project-gallery" style="grid-template-columns: 2fr 1fr; gap: 24px;">
+                <div class="project-gallery-item">
+                    <img src="../assets/images/brixtonsplat/aerialviewofBrixtonsplat.webp" alt="Aerial View of Brixton">
+                    <p class="gallery-caption">Interactive Aerial Map with Landmark Hotspots</p>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 24px;">
+                    <div class="project-gallery-item">
+                        <img src="../assets/images/brixtonsplat/BrixtonSplatloadingScreen.webp" alt="Loading Screen">
+                        <p class="gallery-caption">Tour Loading Screen</p>
+                    </div>
+                    <div class="project-gallery-item">
+                        <img src="../assets/images/brixtonsplat/tatebust.webp" alt="Henry Tate Bust">
+                        <p class="gallery-caption">Henry Tate Bust 3D Model</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tour Link -->
+        <section class="project-section reveal">
+            <div class="project-cta" style="text-align: center; margin-top: 20px;">
+                <a href="https://tours.tag-art.co.uk/brixton/" target="_blank" class="contact-btn primary" style="display: inline-flex; align-items: center; gap: 12px;">
+                    EXPLORE BRIXTON TOUR →
+                </a>
+            </div>
+        </section>
+
+        <section class="project-section reveal">
+            <h2 class="project-section-title">Technical Stack</h2>
+            <div class="project-text">
+                <p>
+                    Ground-based splats were captured using camera-based photogrammetry with professional technique—particularly evident in the David Bowie mural capture where reflections and surface details are preserved with exceptional clarity. The aerial base map was created through an innovative Google Earth screen recording workflow.
+                </p>
+                <p>
+                    All splats were processed through Kiri Engine, cleaned up in SuperSplat editor, and optimized for web deployment. The interactive map interface handles hotspot interactions and modal-based 3D viewers for each landmark.
+                </p>
+            </div>
+            <div class="skills-list mt-40">
+                <span class="skill-item">PHOTOGRAMMETRY</span>
+                <span class="skill-item">GAUSSIAN SPLATS</span>
+                <span class="skill-item">KIRI ENGINE</span>
+                <span class="skill-item">SUPERSPLAT EDITOR</span>
+                <span class="skill-item">GOOGLE EARTH</span>
+                <span class="skill-item">INTERACTIVE MAP</span>
+                <span class="skill-item">3D WEB VIEWER</span>
+                <span class="skill-item">MODAL UI</span>
+            </div>
+        </section>
+    </main>
+
+    <section class="next-project">
+        <p class="next-project-label">NEXT PROJECT</p>
+        <a href="brixton-windmill.html" class="next-project-link">
+            <h2 class="next-project-title">BRIXTON WINDMILL →</h2>
+        </a>
+    </section>
+
+    <div id="footer-placeholder"></div>
+    <script src="../js/components.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Two‑Pane Colour Inspector</title>
+  <style>
+    :root{
+      --bg:#0b0f14; --ink:#e7eef6; --muted:#9fb0c3; --panel:#101722; --line:#1f2a38; --brand:#67b3ff; --err:#ff6b6b; --ok:#3ad29f;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
+    .app{position:fixed;inset:0;display:flex;overflow:hidden}
+    .pane{height:100%;overflow:auto;background:var(--panel);border-right:1px solid var(--line)}
+    .pane.right{border-right:0;border-left:1px solid var(--line)}
+    .divider{width:6px;cursor:col-resize;background:linear-gradient(180deg,#1a2533,#17212e);border-left:1px solid #0b1118;border-right:1px solid #0b1118}
+    header{display:flex;gap:10px;align-items:center;padding:10px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(16,23,34,.95);backdrop-filter: blur(6px);z-index:2}
+    h1{margin:0;font-size:16px}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    input,button,select,textarea{background:#0b1118;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+    input[type="color"]{padding:0;width:40px;height:34px}
+    button{background:var(--brand);color:#071d36;font-weight:700;border-color:#17436f;cursor:pointer}
+    button.ghost{background:transparent;color:var(--ink)}
+    button:disabled{opacity:.6;cursor:not-allowed}
+    label{display:block;font-weight:600;margin-bottom:4px}
+    small, .muted{color:var(--muted)}
+    .section{padding:12px;border-bottom:1px solid var(--line)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+    .swatch{display:flex;align-items:center;gap:10px;padding:8px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.02)}
+    .chip{width:28px;height:28px;border-radius:6px;border:1px solid rgba(255,255,255,.2)}
+    .code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .tools{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .tools > div{border:1px solid var(--line);border-radius:10px;padding:10px;background:#0d141e}
+    .error{color:#ffd4d4;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.4);padding:8px;border-radius:8px}
+    .success{color:#c7ffe9;background:rgba(58,210,159,.1);border:1px solid rgba(58,210,159,.4);padding:8px;border-radius:8px}
+    .list{margin:0;padding:0;list-style:none}
+    .list li{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dashed #172334}
+    .list li:last-child{border-bottom:0}
+    .btn-sm{padding:6px 8px;border-radius:6px;font-size:12px}
+    .nowrap{white-space:nowrap}
+    iframe{width:100%;height:calc(100vh - 56px);border:0;background:#0b1118}
+    .kbd{font-family:ui-monospace,monospace;font-size:12px;border:1px solid var(--line);padding:2px 6px;border-radius:6px;background:#0b1118}
+    .pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:4px 8px}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- LEFT: URL preview -->
+    <div id="left" class="pane" style="width:55%">
+      <header>
+        <h1>Preview</h1>
+        <div class="row" style="flex:1">
+          <input id="url" type="url" placeholder="https://example.com" style="flex:1"/>
+          <button id="load">Load</button>
+          <button id="analyzeProxy" class="ghost">Analyse via proxy</button>
+          <label class="pill"><input id="sameOriginHint" type="checkbox"/> same‑origin</label>
+        </div>
+      </header>
+      <iframe id="frame" title="Preview"></iframe>
+    </div>
+
+    <!-- DRAG DIVIDER -->
+    <div id="divider" class="divider" title="Drag to resize"></div>
+
+    <!-- RIGHT: Colour tools -->
+    <div id="right" class="pane right" style="width:45%">
+      <header>
+        <h1>Colours</h1>
+        <div class="row">
+          <input id="file" type="file" accept="image/*"/>
+          <small class="muted">Upload a screenshot for accurate palette if cross‑origin blocks analysis.</small>
+        </div>
+      </header>
+
+      <div class="section">
+        <div class="row" style="align-items:flex-end">
+          <div>
+            <label for="autoCount">Auto colours</label>
+            <select id="autoCount">
+              <option>5</option><option>6</option><option>8</option><option>10</option>
+            </select>
+          </div>
+          <button id="extract" class="btn-sm">Extract from screenshot</button>
+          <small id="status" class="muted"></small>
+        </div>
+        <div id="autoPalette" class="grid" style="margin-top:10px"></div>
+      </div>
+
+      <div class="section">
+        <div class="row" style="align-items:center">
+          <label for="manual">Manual colour</label>
+          <input id="manual" type="color" value="#67b3ff"/>
+          <button id="addManual" class="btn-sm">Add</button>
+          <button id="copyAll" class="btn-sm">Copy all</button>
+          <button id="downloadJSON" class="btn-sm">Download JSON</button>
+          <button id="downloadCSS" class="btn-sm">Download CSS vars</button>
+        </div>
+        <ul id="userList" class="list" style="margin-top:8px"></ul>
+      </div>
+
+      <div class="section">
+        <h3 style="margin:0 0 8px">Conversions</h3>
+        <small class="muted">Select a colour above to see conversions.</small>
+        <div id="conversions" class="grid" style="margin-top:8px"></div>
+      </div>
+
+      <div class="section">
+        <h3 style="margin:0 0 8px">Colour relationships</h3>
+        <div class="tools">
+          <div>
+            <h4 style="margin:0 0 6px">Complementary & Splits</h4>
+            <div id="rels1" class="grid"></div>
+          </div>
+          <div>
+            <h4 style="margin:0 0 6px">Analogous, Triadic, Tetradic</h4>
+            <div id="rels2" class="grid"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <details>
+          <summary>Proxy & notes</summary>
+          <p class="muted">Cross‑origin pages often block reading colours directly. Use a serverless proxy to fetch HTML for CSS colour parsing, or upload a screenshot for pixel‑accurate palettes.</p>
+          <p class="muted">Proxy endpoint (optional): <span class="code" id="proxyInfo"></span></p>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  // ======================
+  // CONFIG
+  // ======================
+  // Optional proxy endpoint that fetches HTML for a given URL and returns text with CORS enabled.
+  // Example Netlify function path: /.netlify/functions/fetchHtml?url=...
+  // Example Vercel function path: /api/fetchHtml?url=...
+  const PROXY_ENDPOINT = ""; // set to your function URL, leave empty to disable
+
+  // ======================
+  // DOM refs
+  // ======================
+  const left = document.getElementById('left');
+  const right = document.getElementById('right');
+  const divider = document.getElementById('divider');
+  const urlInput = document.getElementById('url');
+  const loadBtn = document.getElementById('load');
+  const analyzeProxyBtn = document.getElementById('analyzeProxy');
+  const sameOriginHint = document.getElementById('sameOriginHint');
+  const frame = document.getElementById('frame');
+  const fileInput = document.getElementById('file');
+  const extractBtn = document.getElementById('extract');
+  const autoCount = document.getElementById('autoCount');
+  const autoPalette = document.getElementById('autoPalette');
+  const manualPicker = document.getElementById('manual');
+  const addManualBtn = document.getElementById('addManual');
+  const userList = document.getElementById('userList');
+  const conversions = document.getElementById('conversions');
+  const rels1 = document.getElementById('rels1');
+  const rels2 = document.getElementById('rels2');
+  const statusEl = document.getElementById('status');
+  const proxyInfo = document.getElementById('proxyInfo');
+  const copyAllBtn = document.getElementById('copyAll');
+  const downloadJSONBtn = document.getElementById('downloadJSON');
+  const downloadCSSBtn = document.getElementById('downloadCSS');
+
+  proxyInfo.textContent = PROXY_ENDPOINT || '(disabled)';
+
+  // ======================
+  // Draggable divider
+  // ======================
+  let dragging=false, startX=0, startLeftWidth=0;
+  divider.addEventListener('mousedown',(e)=>{dragging=true;startX=e.clientX;startLeftWidth=left.getBoundingClientRect().width;document.body.style.userSelect='none'});
+  window.addEventListener('mouseup',()=>{dragging=false;document.body.style.userSelect=''});
+  window.addEventListener('mousemove',(e)=>{
+    if(!dragging) return;
+    const dx=e.clientX-startX;
+    const newLeft = Math.min(window.innerWidth-200, Math.max(200, startLeftWidth+dx));
+    const pct = newLeft/window.innerWidth*100;
+    left.style.width = pct+'%';
+    right.style.width = (100-pct)+'%';
+  });
+
+  // ======================
+  // URL loading
+  // ======================
+  loadBtn.addEventListener('click', ()=>{
+    const u = urlInput.value.trim();
+    if(!u) return;
+    frame.src = u;
+  });
+
+  // ======================
+  // Proxy HTML analyse (CSS colours only)
+  // ======================
+  analyzeProxyBtn.addEventListener('click', async ()=>{
+    if(!PROXY_ENDPOINT){
+      alert('Proxy endpoint is not set. See the "Proxy & notes" section to configure one.');
+      return;
+    }
+    const target = urlInput.value.trim();
+    if(!target){ alert('Enter a URL first.'); return; }
+    statusEl.textContent = 'Fetching via proxy…';
+    try{
+      const res = await fetch(`${PROXY_ENDPOINT}?url=${encodeURIComponent(target)}`);
+      const html = await res.text();
+      const colours = extractCssColours(html);
+      renderPalette(colours.slice(0, Number(autoCount.value)) , autoPalette);
+      statusEl.textContent = `Found ${colours.length} CSS colour mentions`;
+    }catch(err){
+      statusEl.textContent = '';
+      alert('Proxy fetch failed. Check CORS and function logs.');
+    }
+  });
+
+  // ======================
+  // Screenshot -> palette (client‑side)
+  // ======================
+  let screenshotImage = null;
+  fileInput.addEventListener('change', async (e)=>{
+    const f = e.target.files && e.target.files[0];
+    if(!f) return;
+    const img = new Image();
+    img.onload = ()=>{ screenshotImage = img; statusEl.textContent = `Loaded ${f.name} (${img.width}×${img.height})`; };
+    img.onerror = ()=>{ alert('Could not load image'); };
+    img.src = URL.createObjectURL(f);
+  });
+
+  extractBtn.addEventListener('click', ()=>{
+    if(!screenshotImage){ alert('Upload a screenshot first.'); return; }
+    const n = Number(autoCount.value);
+    const palette = dominantColoursFromImage(screenshotImage, n);
+    renderPalette(palette, autoPalette);
+  });
+
+  // ======================
+  // Manual colours & selection
+  // ======================
+  const userColours = new Set();
+  let selected = null;
+
+  addManualBtn.addEventListener('click', ()=>{
+    addUserColour(manualPicker.value);
+  });
+
+  function addUserColour(hex){
+    const h = normalizeHex(hex);
+    if(!h) return;
+    userColours.add(h);
+    renderUserList();
+    selectColour(h);
+  }
+
+  function renderUserList(){
+    userList.innerHTML = '';
+    [...userColours].forEach(hex=>{
+      const li = document.createElement('li');
+      const left = document.createElement('div');
+      left.style.display='flex'; left.style.alignItems='center'; left.style.gap='8px';
+      const chip = document.createElement('div'); chip.className='chip'; chip.style.background=hex;
+      const txt = document.createElement('span'); txt.textContent = hex; txt.className='code';
+      left.append(chip, txt);
+
+      const actions = document.createElement('div');
+      const sel = document.createElement('button'); sel.className='btn-sm'; sel.textContent='Select'; sel.onclick=()=>selectColour(hex);
+      const rm = document.createElement('button'); rm.className='btn-sm ghost'; rm.textContent='Remove'; rm.onclick=()=>{userColours.delete(hex); renderUserList(); if(selected===hex){ selected=null; clearOutputs(); }};
+      actions.append(sel, rm);
+
+      li.append(left, actions);
+      userList.appendChild(li);
+    });
+  }
+
+  function clearOutputs(){ conversions.innerHTML=''; rels1.innerHTML=''; rels2.innerHTML=''; }
+
+  function selectColour(hex){
+    selected = hex;
+    renderConversions(hex);
+    renderRelationships(hex);
+  }
+
+  // ======================
+  // Render helpers
+  // ======================
+  function renderPalette(hexes, container){
+    container.innerHTML = '';
+    hexes.forEach(h=>{
+      const wrap = document.createElement('div'); wrap.className='swatch';
+      const chip = document.createElement('div'); chip.className='chip'; chip.style.background=h;
+      const label = document.createElement('div'); label.innerHTML = `<div class="code">${h}</div>`;
+      const add = document.createElement('button'); add.textContent='Add to list'; add.className='btn-sm'; add.onclick=()=>addUserColour(h);
+      wrap.append(chip,label,add); container.appendChild(wrap);
+    });
+  }
+
+  function renderConversions(hex){
+    const {r,g,b} = hexToRgb(hex);
+    const hsl = rgbToHsl(r,g,b);
+    const hsv = rgbToHsv(r,g,b);
+    const cmyk = rgbToCmyk(r,g,b);
+    const blocks = [
+      {title:'HEX', value:hex},
+      {title:'RGB', value:`rgb(${r}, ${g}, ${b})`},
+      {title:'HSL', value:`hsl(${round(hsl.h,1)} ${round(hsl.s*100,1)}% ${round(hsl.l*100,1)}%)`},
+      {title:'HSV', value:`hsv(${round(hsv.h,1)} ${round(hsv.s*100,1)}% ${round(hsv.v*100,1)}%)`},
+      {title:'CMYK', value:`cmyk(${round(cmyk.c*100,1)}% ${round(cmyk.m*100,1)}% ${round(cmyk.y*100,1)}% ${round(cmyk.k*100,1)}%)`}
+    ];
+    conversions.innerHTML='';
+    blocks.forEach(b=>{
+      const card = document.createElement('div'); card.className='swatch';
+      const chip = document.createElement('div'); chip.className='chip'; chip.style.background=hex;
+      const info = document.createElement('div'); info.innerHTML = `<div><strong>${b.title}</strong></div><div class="code">${b.value}</div>`;
+      const copy = document.createElement('button'); copy.className='btn-sm'; copy.textContent='Copy'; copy.onclick=()=>copyText(b.value);
+      card.append(chip,info,copy); conversions.appendChild(card);
+    });
+  }
+
+  function renderRelationships(hex){
+    const {r,g,b} = hexToRgb(hex); const hsl = rgbToHsl(r,g,b);
+    const H = hsl.h; const S = hsl.s; const L = hsl.l;
+    const comp = hueShift(H,180);
+    const split1 = hueShift(H,150); const split2 = hueShift(H,210);
+    const ana1 = hueShift(H,30); const ana2 = hueShift(H,-30);
+    const tri1 = hueShift(H,120); const tri2 = hueShift(H,-120);
+    const tet1 = hueShift(H,90); const tet2 = hueShift(H,180); const tet3 = hueShift(H,270);
+
+    const group1 = [hslToHex(H,S,L), hslToHex(comp,S,L), hslToHex(split1,S,L), hslToHex(split2,S,L)];
+    const group2 = [hslToHex(ana1,S,L), hslToHex(ana2,S,L), hslToHex(tri1,S,L), hslToHex(tri2,S,L), hslToHex(tet1,S,L), hslToHex(tet2,S,L), hslToHex(tet3,S,L)];
+
+    renderPalette(dedupe(group1), rels1);
+    renderPalette(dedupe(group2), rels2);
+  }
+
+  // ======================
+  // Export
+  // ======================
+  copyAllBtn.addEventListener('click', ()=>{
+    const all = [...userColours];
+    if(selected && !all.includes(selected)) all.unshift(selected);
+    copyText(all.join(', '));
+  });
+
+  downloadJSONBtn.addEventListener('click', ()=>{
+    const data = {selected, colours:[...userColours]};
+    download('palette.json', JSON.stringify(data,null,2));
+  });
+
+  downloadCSSBtn.addEventListener('click', ()=>{
+    const lines = [...userColours].map((h,i)=>`  --color-${i+1}: ${h};`).join('\n');
+    const css = `:root{\n${lines}\n}`;
+    download('palette.css', css);
+  });
+
+  function download(name, text){
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([text],{type:'text/plain'}));
+    a.download = name; a.click();
+  }
+
+  async function copyText(t){
+    try{ await navigator.clipboard.writeText(t); toast('Copied'); }catch{ alert('Copy failed'); }
+  }
+  function toast(msg){ statusEl.textContent = msg; setTimeout(()=>statusEl.textContent='',1200); }
+
+  // ======================
+  // Colour utils
+  // ======================
+  function normalizeHex(h){
+    if(!h) return null; h = h.trim().toLowerCase();
+    if(/^#?[0-9a-f]{3}$/.test(h)) return '#'+h.replace('#','').split('').map(c=>c+c).join('');
+    if(/^#?[0-9a-f]{6}$/.test(h)) return '#'+h.replace('#','');
+    return null;
+  }
+  function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+  function round(n,dp=0){ const p=Math.pow(10,dp); return Math.round(n*p)/p; }
+
+  function hexToRgb(hex){ hex = normalizeHex(hex); const n=parseInt(hex.slice(1),16); return {r:(n>>16)&255,g:(n>>8)&255,b:n&255}; }
+  function rgbToHex(r,g,b){ return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join(''); }
+
+  function rgbToHsl(r,g,b){ r/=255; g/=255; b/=255; const max=Math.max(r,g,b), min=Math.min(r,g,b); let h,s,l=(max+min)/2; if(max===min){h=s=0;} else { const d=max-min; s=l>0.5? d/(2-max-min): d/(max+min); switch(max){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;case b:h=(r-g)/d+4;break;} h*=60;} return {h, s, l}; }
+  function hslToRgb(h,s,l){ const c=(1-Math.abs(2*l-1))*s; const x=c*(1-Math.abs(((h/60)%2)-1)); const m=l-c/2; let r=0,g=0,b=0; if(h>=0&&h<60){r=c;g=x}else if(h<120){r=x;g=c}else if(h<180){g=c;b=x}else if(h<240){g=x;b=c}else if(h<300){r=x;b=c}else{r=c;b=x} return {r:Math.round((r+m)*255),g:Math.round((g+m)*255),b:Math.round((b+m)*255)}; }
+  function hslToHex(h,s,l){ const {r,g,b}=hslToRgb(h,s,l); return rgbToHex(r,g,b); }
+  function rgbToHsv(r,g,b){ r/=255; g/=255; b/=255; const max=Math.max(r,g,b), min=Math.min(r,g,b); const d=max-min; const v=max; const s=max===0?0:d/max; let h=0; if(max!==min){ switch(max){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;case b:h=(r-g)/d+4;break;} h*=60; } return {h,s,v}; }
+  function rgbToCmyk(r,g,b){ const c=1-(r/255), m=1-(g/255), y=1-(b/255); const k=Math.min(c,m,y); if(k===1) return {c:0,m:0,y:0,k:1}; return { c:(c-k)/(1-k), m:(m-k)/(1-k), y:(y-k)/(1-k), k } }
+  function hueShift(h,deg){ let x=(h+deg)%360; if(x<0) x+=360; return x; }
+  function dedupe(arr){ const s=new Set(arr.map(normalizeHex)); return [...s]; }
+
+  // ======================
+  // CSS colour extraction (approximate): finds hex/rgb/hsl tokens in CSS/HTML
+  // ======================
+  function extractCssColours(html){
+    const colours = new Set();
+    const hexRe = /#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b/g;
+    const rgbRe = /rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)/g;
+    const hslRe = /hsl\(\s*(\d{1,3}(?:\.\d+)?)\s*[ ,]\s*(\d{1,3})%\s*[ ,]\s*(\d{1,3})%\s*\)/g;
+    let m;
+    while((m=hexRe.exec(html))) colours.add(normalizeHex(m[0]));
+    while((m=rgbRe.exec(html))){ const [r,g,b]=m.slice(1).map(n=>clamp(parseInt(n,10),0,255)); colours.add(rgbToHex(r,g,b)); }
+    while((m=hslRe.exec(html))){ const h=clamp(parseFloat(m[1]),0,360), s=clamp(parseInt(m[2],10)/100,0,1), l=clamp(parseInt(m[3],10)/100,0,1); colours.add(hslToHex(h,s,l)); }
+    return [...colours];
+  }
+
+  // ======================
+  // Image palette extraction: coarse quantisation histogram for speed
+  // ======================
+  function dominantColoursFromImage(img, n=5){
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const maxW = 480; const scale = Math.min(1, maxW / img.width);
+    canvas.width = Math.max(1, Math.round(img.width*scale));
+    canvas.height= Math.max(1, Math.round(img.height*scale));
+    ctx.drawImage(img,0,0,canvas.width,canvas.height);
+    try{ ctx.getImageData(0,0,1,1); }catch(e){ alert('Image is cross‑origin protected. Save locally and re‑upload.'); return []; }
+    const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
+    const bins = new Map();
+    // Quantise to 16 levels per channel (0..15) to cluster colours
+    for(let i=0;i<data.length;i+=4){
+      const a=data[i+3]; if(a<128) continue; // skip very transparent
+      const r = data[i]>>4, g=data[i+1]>>4, b=data[i+2]>>4;
+      const key = (r<<8)|(g<<4)|b; // 12-bit key
+      bins.set(key, (bins.get(key)||0)+1);
+    }
+    const top = [...bins.entries()].sort((a,b)=>b[1]-a[1]).slice(0, n*3); // oversample
+    const hexes = top.map(([key])=>{
+      const r=( (key>>8)&0xF )*17; // scale back to 0..255
+      const g=( (key>>4)&0xF )*17;
+      const b=(  key     &0xF )*17;
+      return rgbToHex(r,g,b);
+    });
+    // Dedupe while preserving order, then first n
+    const uniq=[]; const seen=new Set();
+    for(const h of hexes){ if(!seen.has(h)){ uniq.push(h); seen.add(h);} }
+    return uniq.slice(0,n);
+  }
+
+  // ======================
+  // Init
+  // ======================
+  // Seed with a helpful URL
+  urlInput.value = location.protocol + '//' + location.host;
+  manualPicker.value = '#67b3ff';
+  addUserColour('#67b3ff');
+
+  </script>
+</body>
+</html>

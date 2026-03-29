@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Shoe Viewer — Thomas Hughes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="noise"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+    <div class="cursor-text" id="cursorText">VIEW</div>
+    <div id="nav-placeholder"></div>
+
+    <section class="project-hero">
+        <div class="project-hero-bg">
+            <img src="../assets/images/3dshoeviewer/homepage.webp" alt="3D Shoe Viewer">
+            <div class="project-hero-overlay"></div>
+        </div>
+        <div class="project-hero-content">
+            <a href="../index.html#work" class="project-hero-back">← BACK TO PROJECTS</a>
+            <h1 class="project-hero-title">3D SHOE VIEWER</h1>
+            <p class="project-hero-subtitle">
+                An interactive e-commerce prototype featuring a photogrammetry-captured shoe with clickable hotspots that snap the camera to predetermined viewpoints with detailed information panels.
+            </p>
+            <div class="project-hero-meta">
+                <div class="project-meta-item">
+                    <span class="project-meta-label">ROLE</span>
+                    <span class="project-meta-value">Creator</span>
+                </div>
+                <div class="project-meta-item">
+                    <span class="project-meta-label">YEAR</span>
+                    <span class="project-meta-value">2025</span>
+                </div>
+                <div class="project-meta-item">
+                    <span class="project-meta-label">TYPE</span>
+                    <span class="project-meta-value">E-commerce Prototype</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="project-body">
+        <section class="project-section reveal">
+            <h2 class="project-section-title">Overview</h2>
+            <div class="project-text">
+                <p>
+                    This e-commerce prototype demonstrates how 3D product visualization can enhance online shopping. The shoe was captured using photogrammetry and placed in an interactive viewer where users can click arrow hotspots to snap to specific angles highlighting different features.
+                </p>
+                <p>
+                    Each camera position is paired with an information panel showing details about that part of the shoe — the sole, tongue, materials, and other unique selling points. Users retain full control to explore freely after any snap.
+                </p>
+            </div>
+        </section>
+
+        <section class="project-section reveal">
+            <h2 class="project-section-title">Interactions</h2>
+            <div class="project-features">
+                <div class="project-feature">
+                    <div class="project-feature-icon">👆</div>
+                    <h3 class="project-feature-title">Hotspot Navigation</h3>
+                    <p class="project-feature-desc">Clickable arrows positioned around the shoe indicate viewable features.</p>
+                </div>
+                <div class="project-feature">
+                    <div class="project-feature-icon">📷</div>
+                    <h3 class="project-feature-title">Camera Snapping</h3>
+                    <p class="project-feature-desc">Smooth animated transitions to predetermined camera angles.</p>
+                </div>
+                <div class="project-feature">
+                    <div class="project-feature-icon">📄</div>
+                    <h3 class="project-feature-title">Info Panels</h3>
+                    <p class="project-feature-desc">Contextual information appears alongside each feature view.</p>
+                </div>
+                <div class="project-feature">
+                    <div class="project-feature-icon">🔄</div>
+                    <h3 class="project-feature-title">Free Exploration</h3>
+                    <p class="project-feature-desc">Full orbit controls remain available after any camera snap.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="project-section reveal">
+            <h2 class="project-section-title">Demo</h2>
+            <div class="project-embed">
+                <!-- Placeholder for embedded 3D viewer -->
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--cream); opacity: 0.5;">
+                    3D Viewer Embed Placeholder
+                </div>
+            </div>
+        </section>
+
+        <section class="project-section reveal">
+            <h2 class="project-section-title">Technical Stack</h2>
+            <div class="skills-list">
+                <span class="skill-item">PHOTOGRAMMETRY</span>
+                <span class="skill-item">THREE.JS</span>
+                <span class="skill-item">MODEL-VIEWER</span>
+                <span class="skill-item">GSAP</span>
+            </div>
+        </section>
+    </main>
+
+    <section class="next-project">
+        <p class="next-project-label">NEXT PROJECT</p>
+        <a href="clay-bowl.html" class="next-project-link">
+            <h2 class="next-project-title">CLAY BOWL E-COMMERCE →</h2>
+        </a>
+    </section>
+
+    <div id="footer-placeholder"></div>
+    <script src="../js/components.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

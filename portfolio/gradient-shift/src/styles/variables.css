@@ -1,0 +1,21 @@
+:root {
+  --void: #0a0a0a;
+  --cream: #F5F0E8;
+  --hot: #FF10F0;
+  --electric: #39FF14;
+  --acid: #D4FF00;
+  --violet: #9D4EDD;
+  --orange: #FF6B35;
+  
+  --font-mono: 'Space Mono', monospace;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-sans: 'Syne', sans-serif;
+}
+
+body {
+  background: var(--void);
+  color: var(--cream);
+  font-family: var(--font-mono);
+  margin: 0;
+  min-height: 100vh;
+}

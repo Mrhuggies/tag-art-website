@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore our virtual tours and services">
+    <title>Virtual Tours - Your Business Name</title>
+    
+    <!-- Preconnect to Google Fonts for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        /* Responsive background image using <picture> */
+        .bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            pointer-events: none;
+            user-select: none;
+            overflow: hidden;
+        }
+        .bg img {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        /* Background overlay for better readability */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header Image */
+        .header-image {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header-image img {
+            max-width: 100%;
+            height: auto;
+            max-height: 200px;
+            object-fit: contain;
+        }
+
+        /* Google Form Section */
+        .form-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .form-container iframe {
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+        }
+        .form-container iframe {
+            height: 2200px;
+        }
+
+        /* Virtual Tours Section */
+        .tours-section {
+            margin-bottom: 3rem;
+        }
+
+        .tours-title {
+            font-family: 'Jost', sans-serif;
+            font-weight: 700;
+            font-size: clamp(2rem, 4vw, 3rem);
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            -webkit-text-stroke: 2px #a2447d;
+            text-stroke: 2px #a2447d;
+        }
+
+        /* Tours Grid */
+        .tours-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .tour-card {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            aspect-ratio: 16/9;
+        }
+
+        .tour-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .tour-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .tour-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(162, 68, 125, 0.35);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tour-card:hover .tour-overlay {
+            opacity: 1;
+        }
+
+        .tour-text {
+            font-family: 'Jost', sans-serif;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 1rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .tours-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .form-section {
+                padding: 1rem;
+            }
+
+            .tours-title {
+                margin-bottom: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tour-text {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Loading optimization */
+        img {
+            loading: lazy;
+        }
+
+        /* Accessibility improvements */
+        .tour-card:focus {
+            outline: 3px solid #a2447d;
+            outline-offset: 2px;
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .tour-overlay {
+                display: none;
+            }
+        }
+
+        /* Force hide any element with class 'toPPGe' */
+        .toPPGe {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <picture class="bg">
+        <!-- Desktop WebP -->
+        <source srcset="images/background-desktop.webp" type="image/webp" media="(min-width: 769px)">
+        <!-- Mobile WebP -->
+        <source srcset="images/background-mobile.webp" type="image/webp" media="(max-width: 768px)">
+        <!-- Desktop JPEG fallback -->
+        <source srcset="images/background-desktop.jpg" type="image/jpeg" media="(min-width: 769px)">
+        <!-- Mobile JPEG fallback -->
+        <source srcset="images/background-mobile.jpg" type="image/jpeg" media="(max-width: 768px)">
+        <img
+            src="images/background-desktop.jpg"
+            alt=""
+            aria-hidden="true"
+            class="bg"
+            fetchpriority="high"
+            decoding="async"
+            />
+    </picture>
+    <div class="container">
+        <!-- Header Image -->
+        <header class="header-image">
+            <img src="images/website header retina display.png" alt="Company Logo" loading="eager">
+        </header>
+
+        <!-- Google Form Section -->
+        <section class="form-section">
+            <div class="form-container">
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfdiH7mX4SNoV1xmeuv-LC0hIvsXr0bspIUvnf8hzYtkT9XSg/viewform?embedded=true" 
+                        width="640" 
+                        height="2200" 
+                        frameborder="0" 
+                        marginheight="0" 
+                        scrolling="yes"
+                        marginwidth="0"
+                        title="Contact Form">
+                    Loading…
+                </iframe>
+            </div>
+        </section>
+
+        <!-- Virtual Tours Section -->
+        <section class="tours-section">
+            <header class="header-image">
+            <img src="images/header2png.png" alt="Company Logo" loading="eager">
+        </header>
+            
+            <div class="tours-grid">
+                <a href="https://www.tag-art.co.uk/tours/oxfordhouse/" class="tour-card" tabindex="0" role="button" aria-label="Oxford House">
+                    <img src="images/oxfordhouse.webp" 
+                         alt="Outside view of Oxford House" 
+                         class="tour-image">
+                    <div class="tour-overlay">
+                        <div class="tour-text">Oxford House</div>
+                    </div>
+                </a>
+
+                <a href="https://www.tag-art.co.uk/tours/stchads/" class="tour-card" tabindex="0" role="button" aria-label="Commercial Tour">
+                    <img src="images/stchads.webp" 
+                         alt="Inside St Chad's" 
+                         class="tour-image">
+                    <div class="tour-overlay">
+                        <div class="tour-text">St Chad's</div>
+                    </div>
+                </a>
+
+                <a href="https://www.tag-art.co.uk/tours/sudbourneschool/" class="tour-card" tabindex="0" role="button" aria-label="Retail Tour">
+                    <img src="images/sudbourneschool.webp" 
+                         alt="Birdseye of Sudbourne school" 
+                         class="tour-image">
+                    <div class="tour-overlay">
+                        <div class="tour-text">Sudbourne School</div>
+                    </div>
+                </a>
+
+                <a href="https://www.tag-art.co.uk/tours/mytour/" class="tour-card" tabindex="0" role="button" aria-label="Hospitality Tour">
+                    <img src="images/toweroflondon.webp" 
+                         alt="The tower of london at sunset" 
+                         class="tour-image">
+                    <div class="tour-overlay">
+                        <div class="tour-text">London Tour</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Keyboard navigation for tour cards
+        document.querySelectorAll('.tour-card').forEach(card => {
+            card.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+        });
+
+        // Lazy loading fallback for older browsers
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src || img.src;
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+
+            document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+
+        // Form iframe responsive adjustment
+        function adjustFormHeight() {
+            const iframe = document.querySelector('.form-container iframe');
+            if (window.innerWidth <= 480) {
+                iframe.style.height = '2500px';
+            } else if (window.innerWidth <= 768) {
+                iframe.style.height = '2300px';
+            } else {
+                iframe.style.height = '2200px';
+            }
+        }
+
+        window.addEventListener('resize', adjustFormHeight);
+        window.addEventListener('load', adjustFormHeight);
+    </script>
+</body>
+</html>

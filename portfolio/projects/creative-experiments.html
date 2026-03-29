@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Experiments — Thomas Hughes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="noise"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+    <div class="cursor-text" id="cursorText">VIEW</div>
+    <div id="nav-placeholder"></div>
+
+    <section class="project-hero" style="min-height: 50vh;">
+        <div class="project-hero-bg">
+            <div style="background: linear-gradient(135deg, var(--violet) 0%, var(--hot) 100%); width: 100%; height: 100%;"></div>
+            <div class="project-hero-overlay"></div>
+        </div>
+        <div class="project-hero-content">
+            <a href="../index.html#work" class="project-hero-back">← BACK TO PROJECTS</a>
+            <h1 class="project-hero-title">CREATIVE EXPERIMENTS</h1>
+            <p class="project-hero-subtitle">
+                A collection of tools, prototypes, and creative explorations — from utility apps to experimental interfaces.
+            </p>
+        </div>
+    </section>
+
+    <main class="project-body" style="max-width: none; padding: 0;">
+        <section class="project-section reveal" style="padding: 60px; max-width: 1400px; margin: 0 auto;">
+            <h2 class="project-section-title">The Lab</h2>
+            <div class="project-text">
+                <p>
+                    Not everything fits into a major project. This page collects tools I've built for my own workflow, creative prototypes, and technical explorations. Each solves a real problem or tests an interesting idea.
+                </p>
+            </div>
+        </section>
+
+        <div class="experiments-grid">
+            <!-- 3D Viewer Tool -->
+            <a href="https://apps.tag-art.co.uk/3dviewer/" target="_blank" class="experiment-card" data-cursor="LAUNCH">
+                <div class="experiment-preview">
+                    <img src="../assets/images/placeholder-3dviewer.jpg" alt="3D Model Viewer">
+                </div>
+                <div class="experiment-content">
+                    <h3 class="experiment-title">3D Model Viewer</h3>
+                    <p class="experiment-desc">Web-based 3D model viewer for previewing GLB/GLTF files directly in the browser. Drag and drop support with orbit controls.</p>
+                    <div class="experiment-tags">
+                        <span class="experiment-tag">THREE.JS</span>
+                        <span class="experiment-tag">TOOL</span>
+                    </div>
+                    <span class="experiment-link">LAUNCH TOOL →</span>
+                </div>
+            </a>
+
+            <!-- Invoice Generator -->
+            <a href="https://apps.tag-art.co.uk/invoicegenerator/" target="_blank" class="experiment-card" data-cursor="LAUNCH">
+                <div class="experiment-preview">
+                    <img src="../assets/images/placeholder-invoice.jpg" alt="Invoice Generator">
+                </div>
+                <div class="experiment-content">
+                    <h3 class="experiment-title">Invoice Generator</h3>
+                    <p class="experiment-desc">Quick invoice creation tool for freelancers. Fill in details, generate PDF, done. Built to streamline my own billing workflow.</p>
+                    <div class="experiment-tags">
+                        <span class="experiment-tag">PDF</span>
+                        <span class="experiment-tag">UTILITY</span>
+                    </div>
+                    <span class="experiment-link">LAUNCH TOOL →</span>
+                </div>
+            </a>
+
+            <!-- PNG Converter -->
+            <a href="https://apps.tag-art.co.uk/pngconverter/" target="_blank" class="experiment-card" data-cursor="LAUNCH">
+                <div class="experiment-preview">
+                    <img src="../assets/images/placeholder-pngconverter.jpg" alt="PNG Converter">
+                </div>
+                <div class="experiment-content">
+                    <h3 class="experiment-title">PNG Converter</h3>
+                    <p class="experiment-desc">Convert images to PNG format in the browser. No upload required — all processing happens locally for privacy.</p>
+                    <div class="experiment-tags">
+                        <span class="experiment-tag">CANVAS</span>
+                        <span class="experiment-tag">UTILITY</span>
+                    </div>
+                    <span class="experiment-link">LAUNCH TOOL →</span>
+                </div>
+            </a>
+
+            <!-- Image Converter -->
+            <a href="https://apps.tag-art.co.uk/imageconverter/" target="_blank" class="experiment-card" data-cursor="LAUNCH">
+                <div class="experiment-preview">
+                    <img src="../assets/images/placeholder-imageconverter.jpg" alt="Image Converter">
+                </div>
+                <div class="experiment-content">
+                    <h3 class="experiment-title">Image Format Converter</h3>
+                    <p class="experiment-desc">Convert between image formats (JPG, PNG, WebP) with quality controls. Client-side processing for speed and privacy.</p>
+                    <div class="experiment-tags">
+                        <span class="experiment-tag">JAVASCRIPT</span>
+                        <span class="experiment-tag">UTILITY</span>
+                    </div>
+                    <span class="experiment-link">LAUNCH TOOL →</span>
+                </div>
+            </a>
+
+            <!-- Gradient Shift -->
+            <a href="../gradient-shift/dist/index.html" class="experiment-card" data-cursor="LAUNCH">
+                <div class="experiment-preview">
+                    <img src="../assets/images/placeholder-gradient.jpg" alt="Gradient Shift">
+                </div>
+                <div class="experiment-content">
+                    <h3 class="experiment-title">Gradient Shift</h3>
+                    <p class="experiment-desc">Interactive colour harmony tool for creating and exporting gradient combinations. Built with React and chroma.js.</p>
+                    <div class="experiment-tags">
+                        <span class="experiment-tag">REACT</span>
+                        <span class="experiment-tag">COLOUR</span>
+                    </div>
+                    <span class="experiment-link">LAUNCH TOOL →</span>
+                </div>
+            </a>
+
+            <!-- Placeholder for future experiments -->
+            <div class="experiment-card" style="opacity: 0.5; pointer-events: none;">
+                <div class="experiment-preview" style="background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 48px;">+</span>
+                </div>
+                <div class="experiment-content">
+                    <h3 class="experiment-title">More Coming Soon</h3>
+                    <p class="experiment-desc">New tools and experiments are always in development. Check back for updates.</p>
+                    <div class="experiment-tags">
+                        <span class="experiment-tag">TBD</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <section class="next-project">
+        <p class="next-project-label">BACK TO MAIN</p>
+        <a href="../index.html#work" class="next-project-link">
+            <h2 class="next-project-title">VIEW ALL PROJECTS →</h2>
+        </a>
+    </section>
+
+    <div id="footer-placeholder"></div>
+    <script src="../js/components.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>
